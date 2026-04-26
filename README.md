@@ -1,5 +1,6 @@
+
 # 🛡️ Policy-Jarl: A Policy Guardian Framework
-**A Graduation Project Implementation for Stateful AI Security Guardrails**
+**A (Work in Progress) Graduation Project Implementation for Stateful AI Security Guardrails**
 
 ## 📖 Project Overview
 Policy-Jarl is a specialized security middleware architecture designed to address the growing "governance gap" in autonomous AI agents. As AI agents gain the capability to interact with internal tools, databases, and sensitive infrastructure, the need for deterministic, role-based, and stateful security controls becomes critical.
@@ -22,25 +23,31 @@ The framework is built using a "Best-of-Breed" security stack to ensure isolatio
 
 ## 📐 Design Artifacts
 
-### 1. Architectural Design
+### 1. External Architectural Design
 The architecture follows a modular "Sidecar" and "Proxy" approach, ensuring the security judge (OPA) is decoupled from the AI executor.
 
-*(Insert LucidChart: Architectural Design Diagram)*
+<img width="4350" height="2951" alt="Grad Prj - With(out) Abstract" src="https://github.com/user-attachments/assets/17c7ce76-b7b4-43f2-974a-53886b08c649" />
 
-### 2. Deployment Diagram
+### 2. Internal Architectural Design
+From the intenal 
+
+<img width="5213" height="2799" alt="Grad Prj - Abstract (Analogy)" src="https://github.com/user-attachments/assets/84689599-515a-4c6d-85a7-1874d10fa537" />
+
+### 3. Deployment Diagram
 Implemented as a containerized microservices architecture using Docker-Compose for environment isolation.
 
-*(Insert LucidChart: Deployment Diagram)*
+<img width="5138" height="2912" alt="Grad Prj - Deployment" src="https://github.com/user-attachments/assets/a99e7386-7626-4d2a-8d15-ac45b50bccb2" />
 
-### 3. Activity Diagram (The Security Loop)
+### 4. Activity Diagram (The Security Loop)
 This diagram illustrates the lifecycle of a request: from Inbound Signal Generation to Outbound DLP (Data Leakage Prevention) inspection.
 
-*(Insert LucidChart: Activity/Sequence Diagram)*
+<img width="2816" height="2799" alt="Grad Prj - Activity" src="https://github.com/user-attachments/assets/87ff2ce2-94b9-4c55-af92-549372ba75c2" />
 
-### 4. Use Case Diagram
+### 5. Use Case Diagram
 Demonstrates the distinct roles of the **User (Intern)**, **Administrator**, and **Security Auditor (HITL)** within the framework.
 
-*(Insert LucidChart: Use Case Diagram)*
+<img width="2057" height="2488" alt="Grad Prj - Usecase" src="https://github.com/user-attachments/assets/90cb0bd4-97a9-45d5-9feb-03d6adca9a03" />
+
 
 ---
 
