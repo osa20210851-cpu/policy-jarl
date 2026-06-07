@@ -1,11 +1,11 @@
 
-# 🛡️ Policy-Jarl: A Policy Guardian Framework
-**A (Work in Progress) Graduation Project Implementation for Stateful AI Security Guardrails**
+# 🛡️ Policy-Jarl: A Policy RBAC Guard for Actionable AIs
+**A Graduation Project Implementation for an AuthZ/AuthN Guardrail for an AI DB Agent**
+
+---
 
 ## 📖 Project Overview
 Policy-Jarl is a specialized security middleware architecture designed to address the growing "governance gap" in autonomous AI agents. As AI agents gain the capability to interact with internal tools, databases, and sensitive infrastructure, the need for deterministic, role-based, and stateful security controls becomes critical.
-
-This project implements the **"Guardian Agent" pattern**, where an independent, cryptographically-secure proxy intercepts all interactions between users and an LLM-powered agent.
 
 ---
 
@@ -17,7 +17,7 @@ The framework is built using a "Best-of-Breed" security stack to ensure isolatio
 - **Identity Provider:** [Telegram Bot API](https://core.telegram.org/bots) serving as a trusted, device-linked IdP.
 - **Memory Layer:** [Redis](https://redis.io/) for stateful context tracking and session-bound JWT storage.
 - **Audit & Observability:** [ELK Stack](https://www.elastic.co/what-is/elk-stack) (Elasticsearch, Logstash, Kibana) for real-time forensic logging and HITL (Human-in-the-Loop) dashboarding.
-- **AI Engine:** [HKUDS Nanobot](https://github.com/HKUDS/nanobot) integrated with [Google Gemini 1.5/2.5](https://ai.google.dev/gemini-api).
+- **AI Engine:** [HKUDS Nanobot](https://github.com/HKUDS/nanobot) integrated with [Google Gemini 3.1](https://ai.google.dev/gemini-api).
 
 ---
 
