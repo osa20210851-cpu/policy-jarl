@@ -34,52 +34,6 @@ Policy-Jarl implements a strict **Zero-Trust Architecture** divided into three d
 
 ---
 
-## 📐 Design Diagrams
-
-### 1. External Architecture
-Decouples the AI executor from the underlying database using a secure proxy and sidecar authorization layout.
-<br>
-<br>
-<img width="4313" height="2949" alt="Architecture With out  Guardrail" src="https://github.com/user-attachments/assets/024e97ae-9deb-4f98-9b3b-c315b7a99280" />
-
-### 2. Internal Diagram
-Visualizes the internals of the system, zooming into each layer and its components.
-<br>
-<br>
-<img width="4313" height="2799" alt="Inside the Guardrail (Anology)" src="https://github.com/user-attachments/assets/a6166d3c-4702-4327-a296-d28c3c473f60" />
-
-### 3. Deployment Diagrams
-A fully isolated containerized microservices environment orchestrated via Docker Compose. 
-<br>
-<br>
-<img width="3079" height="2049" alt="Grad Prj - Docker" src="https://github.com/user-attachments/assets/f6a5f50f-2a0b-495f-9e55-f515d71ae461" />
-
-And the logical imagined design of the deployment before any implementation progress has been made. Many functions were merged with the central function since implementation.
-<br>
-<br>
-<img width="5138" height="2912" alt="Grad Prj - Deployment" src="https://github.com/user-attachments/assets/1a9f536c-fde6-4bcf-8d03-babcbf085ab3" />
-
-
-### 4. Activity Diagram (The Security Loop)
-Traces request flows from initial intent parsing through OPA classification to outbound Data Leakage Prevention (DLP) checks.
-<br>
-<br>
-<img width="2816" height="2799" alt="Grad Prj - Activity" src="https://github.com/user-attachments/assets/87ff2ce2-94b9-4c55-af92-549372ba75c2" />
-
-### 5. Use Case Diagram
-Visualizes interactions for the User, Security Administrator, the Human-in-the-Loop (HITL) Reviewer, and other actors with the system.
-<br>
-<br>
-<img width="1971" height="2081" alt="Grad Prj - Usecase" src="https://github.com/user-attachments/assets/68c5bea7-52f2-404f-a53a-2955193c3a62" />
-
-### 6. Mock Database Diagram
-Demonstrates the functionality of the system by applying it to a mock database with a total of 15 tables each assigned a severity level and filled with mock data.
-<br>
-<br>
-<img width="2966" height="3036" alt="Grad Prj - Database" src="https://github.com/user-attachments/assets/11e3fe12-078c-4043-8882-bb86a98c9d83" />
-
----
-
 ## 🛡️ OPA Security Constitution (`policies/jarl.rego`)
 
 Security validation policies are processed in strict priority order to defend against OWASP Top 10 LLM vulnerabilities:
@@ -127,6 +81,52 @@ pip install -r requirements.txt
 python3 final_exam.py
 ```
 This runs over 1,000+ test scenarios verifying OPA policy enforcement, RBAC enforcement, and adversarial resistance.
+
+---
+
+## 📐 Design Diagrams
+
+### 1. External Architecture
+Decouples the AI executor from the underlying database using a secure proxy and sidecar authorization layout.
+<br>
+<br>
+<img width="4313" height="2949" alt="Architecture With out  Guardrail" src="https://github.com/user-attachments/assets/024e97ae-9deb-4f98-9b3b-c315b7a99280" />
+
+### 2. Internal Diagram
+Visualizes the internals of the system, zooming into each layer and its components.
+<br>
+<br>
+<img width="4313" height="2799" alt="Inside the Guardrail (Anology)" src="https://github.com/user-attachments/assets/a6166d3c-4702-4327-a296-d28c3c473f60" />
+
+### 3. Deployment Diagrams
+A fully isolated containerized microservices environment orchestrated via Docker Compose. 
+<br>
+<br>
+<img width="3079" height="2049" alt="Grad Prj - Docker" src="https://github.com/user-attachments/assets/f6a5f50f-2a0b-495f-9e55-f515d71ae461" />
+
+And the logical imagined design of the deployment before any implementation progress has been made. Many functions were merged with the central function since implementation.
+<br>
+<br>
+<img width="5138" height="2912" alt="Grad Prj - Deployment" src="https://github.com/user-attachments/assets/1a9f536c-fde6-4bcf-8d03-babcbf085ab3" />
+
+
+### 4. Activity Diagram (The Security Loop)
+Traces request flows from initial intent parsing through OPA classification to outbound Data Leakage Prevention (DLP) checks.
+<br>
+<br>
+<img width="2816" height="2799" alt="Grad Prj - Activity" src="https://github.com/user-attachments/assets/87ff2ce2-94b9-4c55-af92-549372ba75c2" />
+
+### 5. Use Case Diagram
+Visualizes interactions for the User, Security Administrator, the Human-in-the-Loop (HITL) Reviewer, and other actors with the system.
+<br>
+<br>
+<img width="1971" height="2081" alt="Grad Prj - Usecase" src="https://github.com/user-attachments/assets/68c5bea7-52f2-404f-a53a-2955193c3a62" />
+
+### 6. Mock Database Diagram
+Demonstrates the functionality of the system by applying it to a mock database with a total of 15 tables each assigned a severity level and filled with mock data.
+<br>
+<br>
+<img width="2966" height="3036" alt="Grad Prj - Database" src="https://github.com/user-attachments/assets/11e3fe12-078c-4043-8882-bb86a98c9d83" />
 
 ---
 
