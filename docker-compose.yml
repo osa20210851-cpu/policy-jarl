@@ -1,0 +1,143 @@
+version: '3.8'
+
+services:
+  # The Officer (FastAPI Guardrail Service)
+  officer:
+    build: .
+    networks:
+      - jarl-frontend
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - opa
+      - redis
+    environment:
+      - OPA_URL=http://opa:8181/v1/data/jarl/verdict
+      - REDIS_URL=redis://redis:6379/0
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - AGENT_URL=http://agent:8900/v1/chat/completions
+      - AGENT_MODEL=${AGENT_MODEL}
+      - JWT_SECRET=${JWT_SECRET}
+      - ROOT_ADMIN_ID=${ROOT_ADMIN_ID}
+      - EMERGENCY_SECRET=${EMERGENCY_SECRET}
+      - DB_GATE_URL=http://db-gate:8001/query
+      - PYTHONUNBUFFERED=1
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+
+  # The Database Gateway (The ONLY bridge between networks)
+  db-gate:
+    image: python:3.11-slim
+    networks:
+      - jarl-frontend
+      - jarl-backend
+    command: bash -c "pip install fastapi uvicorn asyncpg httpx pydantic && uvicorn db_gate:app --host 0.0.0.0 --port 8001"
+    volumes:
+      - ./db_gate.py:/app/db_gate.py
+    working_dir: /app
+    environment:
+      - DB_URL=postgresql://jarl_admin:jarl_password@db:5432/company_db
+      - OPA_URL=http://opa:8181/v1/data/jarl/verdict
+    depends_on:
+      - db
+      - opa
+
+  # The Agent (HKUDS Nanobot)
+  agent:
+    build:
+      context: .
+      dockerfile: Dockerfile.agent
+    networks:
+      - jarl-frontend
+    volumes:
+      - ./.nanobot:/home/jarl_user/.nanobot
+    environment:
+      - NANOBOT_MODEL=${AGENT_MODEL}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - NANOBOT_DISABLED_SKILLS=filesystem,exec,web,notebook
+    ports:
+      - "8900:8900"
+
+  # The Judge (OPA)
+  opa:
+    image: openpolicyagent/opa
+    networks:
+      - jarl-frontend
+    ports:
+      - "8181:8181"
+    volumes:
+      - ./policies:/policies
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+    command: ["run", "--server", "--addr", ":8181", "/policies"]
+
+  # The Witness (ELK Stack)
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
+    networks:
+      - jarl-frontend
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.12.0
+    networks:
+      - jarl-frontend
+    volumes:
+      - ./logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
+      - .:/usr/share/logstash/external_logs:ro
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.12.0
+    networks:
+      - jarl-frontend
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    volumes:
+      - kibana_data:/usr/share/kibana/data
+    depends_on:
+      - elasticsearch
+
+  # Single Source of Truth for Identity & State
+  redis:
+    image: redis:alpine
+    networks:
+      - jarl-frontend
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: ["redis-server", "--appendonly", "yes"]
+
+  # Cyber Range Infrastructure (Hidden on Private Network)
+  db:
+    image: postgres:alpine
+    networks:
+      - jarl-backend
+    environment:
+      - POSTGRES_USER=jarl_admin
+      - POSTGRES_PASSWORD=jarl_password
+      - POSTGRES_DB=company_db
+    # Port 5432 removed - NOT accessible from host or frontend
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+networks:
+  jarl-frontend:
+  jarl-backend:
+
+volumes:
+  es_data:
+  kibana_data:
+  redis_data:
